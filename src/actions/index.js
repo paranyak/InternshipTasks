@@ -17,7 +17,7 @@ export const fetchUserError = (name, password) => {
 
 
 export const fetchUserSuccess = (name, password) => {
-    console.log("Fetch success in action");
+    console.log("Fetch success in action", name, password);
     return {
         type: 'FETCH_USER_SUCCESS',
         name, password

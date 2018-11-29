@@ -18,11 +18,16 @@ class Form extends Component {
         this.setState(newState);
     }
 
-    handleSubmit(event) {
+     handleSubmit(event) {
         event.preventDefault();
         console.log("Fetching start");
         this.props.fetchUser(this.state.name, this.state.password);
         console.log("Fetching end");
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        if(this.props !== nextProps){console.log("GET NEW USER", nextProps)}
+        return true;
     }
 
 
@@ -41,16 +46,16 @@ class Form extends Component {
                    </label>
                    <input type="submit" value="Submit" />
                </form>
-
-
            </div>
         );
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+    console.log("Here", state);
+    return {
     ...state
-})
+}}
 const mapDispatchToProps = dispatch => ({
     fetchUser: (name, password) => dispatch(fetchUser(name, password))
 })

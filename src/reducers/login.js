@@ -10,7 +10,11 @@ export default (state = {}, action) => {
             console.log("FETCH USER", action);
             return state;
         default:
-            console.log("default: ", action)
-            return state
+            console.log("default: ", action, state);
+            return {
+            ...state,
+            name: action.name,
+            password: action.password
+        };
     }
 }
