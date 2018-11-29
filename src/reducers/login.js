@@ -5,7 +5,12 @@ export default (state = {}, action) => {
             return {
                 result: action.payload
             }
+
+        case 'FETCH_USER':
+            console.log("FETCH USER", action);
+            return state;
         default:
+            console.log("default: ", action)
             return state
     }
 }

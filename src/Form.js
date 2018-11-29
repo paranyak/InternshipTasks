@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { simpleAction } from './actions'
+import { fetchUser } from './api/fetch'
 
 
 class Form extends Component {
@@ -15,18 +15,14 @@ class Form extends Component {
     handleChange(event, type) {
         let newState = {};
         newState[type] = event.target.value;
-        console.log("New state:", newState, this.state);
         this.setState(newState);
     }
 
     handleSubmit(event) {
-
         event.preventDefault();
-        alert("A name was submitted: " + this.state.name + "password: " + this.state.password);
-
-        console.log("Simple action start");
-        this.props.simpleAction();
-        console.log("Simple action end");
+        console.log("Fetching start");
+        this.props.fetchUser(this.state.name, this.state.password);
+        console.log("Fetching end");
     }
 
 
@@ -56,7 +52,7 @@ const mapStateToProps = state => ({
     ...state
 })
 const mapDispatchToProps = dispatch => ({
-    simpleAction: () => dispatch(simpleAction())
+    fetchUser: (name, password) => dispatch(fetchUser(name, password))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
 
