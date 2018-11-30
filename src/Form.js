@@ -52,12 +52,14 @@ class Form extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log("Here", state);
+    console.log("(FORM)map state to props: ", state);
     return {
     ...state
-}}
+}};
+
 const mapDispatchToProps = dispatch => ({
     fetchUser: (name, password) => dispatch(fetchUser(name, password))
-})
+});
+
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
 
