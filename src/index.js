@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-
 import configureStore from './store';
-import Form from './Form';
+
+
+import Navigation from "./components/Navigation";
+
 ReactDOM.render(
     <Provider store={configureStore()}>
-        <Form />
+        <Navigation/>
     </Provider>,
     document.getElementById('root')
 );

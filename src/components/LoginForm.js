@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { fetchUser } from './api/fetch'
+import { fetchUser } from '../api/fetch'
 
 
-class Form extends Component {
+class LoginForm extends Component {
 
     constructor(props) {
         super(props);
@@ -34,17 +34,17 @@ class Form extends Component {
     render() {
         return (
            <div>
-               <form onSubmit={(e) => this.handleSubmit(e)}>
-                   <label>
+               <form onSubmit={(e) => this.handleSubmit(e)} className={"form"}>
+                   <label className={"form__label"}>
                        Name:
-                       <input value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" />
+                       <input className={"form__input"} value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" />
                    </label>
 
-                   <label>
+                   <label className={"form__label"}>
                        Password:
-                       <input value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="text" />
+                       <input className={"form__input"} value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" />
                    </label>
-                   <input type="submit" value="Submit" />
+                   <input className={"form__input form__input_submit "}type="submit" value="Login" />
                </form>
            </div>
         );
@@ -61,5 +61,5 @@ const mapDispatchToProps = dispatch => ({
     fetchUser: (name, password) => dispatch(fetchUser(name, password))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
 
