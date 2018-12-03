@@ -19,7 +19,8 @@ class LoginForm extends Component {
 
         this.state = {
             name: "",
-            password: ""
+            password: "",
+            fetching : false
         };
     }
 
@@ -47,12 +48,31 @@ class LoginForm extends Component {
             action = fromFetch.fetchUserError(name, password, e.message);
             dispatch(action);
         }
+        this.setState({"fetching":true});
+
+    }
+    shouldComponentUpdate(nextProps, nextState){
+
+        if(!this.props.login.request && this.props.login.error && nextState.fetching){ console.log("Error");this.displayMessage(false, nextProps.login.error)}
+        else if(!this.props.login.request && !this.props.login.error && nextState.fetching){ console.log("Good");this.displayMessage(true, "Login finished")}
+
+        return true;
+    }
+
+    displayMessage(status, message){
+        let messageItem = document.querySelector(".error-message");
+        console.log(message);
+        messageItem.innerHTML = message;
+        messageItem.style.visibility = "initial";
+
+        if(status)messageItem.style.color = "white";
+        else messageItem.style.color = "#ED4C67";
     }
 
 
     render() {
         return (
-            <div>
+            <div className="form-container">
                 <form onSubmit={(e) => this.handleSubmit(e)} className="form">
                     <input className="form__input" value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" placeholder={"Name"}/>
 
@@ -60,10 +80,9 @@ class LoginForm extends Component {
 
                     <input className="form__input form__input_submit "  type="submit" value="Login" />
                 </form>
+                <h1 className={"error-message"}>ERROR</h1>
 
-                <div className="redirect-link">
-                    <Link to="/signin">Click to Sign In </Link>
-                </div>
+                <Link to="/signin" className="redirect-link">Click to Sign In </Link>
             </div>
         );
     }

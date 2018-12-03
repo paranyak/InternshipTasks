@@ -45,7 +45,6 @@ class SignIn extends Component {
             dispatch(action);
         }
         catch (e) {
-            console.log("ERROR: ", e);
             action = fromFetch.fetchSigninError(name, password, email, e.message);
             dispatch(action);
         }
@@ -53,21 +52,28 @@ class SignIn extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        if(this.state !== nextState){console.log("GET ", nextState)}
-        if(this.props !== nextProps){console.log("PET ", nextProps, !nextProps.signin.request && nextProps.signin.error)}
-        if(!nextProps.signin.request && nextProps.signin.error && this.state.fetching) this.displayErrorMessage(nextProps.signin.error);
+        // if(this.state !== nextState){console.log("GET ", nextState, this.state)}
+        // if(this.props !== nextProps){console.log("PET ", nextProps, this.props)}
+        if(!this.props.signin.request && this.props.signin.error && nextState.fetching){ console.log("Error");this.displayMessage(false, nextProps.signin.error)}
+        else if(!this.props.signin.request && !this.props.signin.error && nextState.fetching){ console.log("Good");this.displayMessage(true, "Registration finished")}
+
         return true;
     }
 
-    displayErrorMessage(error){
+    displayMessage(status, message){
+        let messageItem = document.querySelector(".error-message");
+        console.log(message);
+        messageItem.innerHTML = message;
+        messageItem.style.visibility = "initial";
 
-        console.log("error", error)
+        if(status)messageItem.style.color = "white";
+        else messageItem.style.color = "#ED4C67";
     }
 
 
     render() {
         return (
-            <div>
+            <div className="form-container">
                 <form onSubmit={(e) => this.handleSubmit(e)} className="form">
 
                     <input className="form__input" value={this.state.email} onChange={(e) => this.handleChange(e, "email")} type="email" placeholder={"Enter your email"}/>
@@ -79,6 +85,7 @@ class SignIn extends Component {
 
                     <input className="form__input form__input_submit " type="submit" value="Sign In" />
                 </form>
+                <h1 className={"error-message"}>ERROR</h1>
             </div>
         );
     }
