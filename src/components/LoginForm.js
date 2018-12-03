@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { fetchUser } from '../api/fetch'
-
+import {Link } from 'react-router-dom';
 
 class LoginForm extends Component {
 
@@ -34,18 +34,17 @@ class LoginForm extends Component {
     render() {
         return (
            <div>
-               <form onSubmit={(e) => this.handleSubmit(e)} className={"form"}>
-                   <label className={"form__label"}>
-                       Name:
-                       <input className={"form__input"} value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" />
-                   </label>
+               <form onSubmit={(e) => this.handleSubmit(e)} className="form">
+                   <input className="form__input" value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" placeholder={"Name"}/>
 
-                   <label className={"form__label"}>
-                       Password:
-                       <input className={"form__input"} value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" />
-                   </label>
-                   <input className={"form__input form__input_submit "}type="submit" value="Login" />
+                   <input className="form__input" value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" placeholder={"Password"}/>
+
+                   <input className="form__input form__input_submit "  type="submit" value="Login" />
                </form>
+
+               <div className="redirect-link">
+                 <Link to="/signin">Click to Sign In </Link>
+                </div>
            </div>
         );
     }

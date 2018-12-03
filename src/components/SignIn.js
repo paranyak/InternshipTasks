@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSignin } from '../api/fetch'
 
+import '../styles/SignIn.sass';
 
 class SignIn extends Component {
 
@@ -36,22 +37,16 @@ class SignIn extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={(e) => this.handleSubmit(e)} className={"form"}>
-                    <label className={"form__label"}>
-                        Enter your email:
-                        <input className={"form__input"} value={this.state.email} onChange={(e) => this.handleChange(e, "email")} type="email" />
-                    </label>
+                <form onSubmit={(e) => this.handleSubmit(e)} className="form">
 
-                    <label className={"form__label"}>
-                        Enter your user name:
-                        <input className={"form__input"} value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" />
-                    </label>
+                    <input className="form__input" value={this.state.email} onChange={(e) => this.handleChange(e, "email")} type="email" placeholder={"Enter your email"}/>
 
-                    <label className={"form__label"}>
-                        Enter password:
-                        <input className={"form__input"} value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" />
-                    </label>
-                    <input className={"form__input form__input_submit "}type="submit" value="Sign In" />
+
+                    <input className="form__input" value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" placeholder={"Enter your username"}/>
+
+                    <input className="form__input" value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" placeholder={"Enter your password"}/>
+
+                    <input className="form__input form__input_submit " type="submit" value="Sign In" />
                 </form>
             </div>
         );
