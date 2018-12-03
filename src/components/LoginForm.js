@@ -1,15 +1,26 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-import { connect } from 'react-redux';
-import { fetchUser } from '../api/fetch'
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux'
 import {Link } from 'react-router-dom';
+
+
+import * as fromFetch from '../actions/index';
+import {fetchUser} from '../api/fetch'
+
 
 class LoginForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {name: "",
-        password: ""};
+        const {dispatch} = props;
+
+        this.boundActionCreators = bindActionCreators(fromFetch, dispatch);
+
+        this.state = {
+            name: "",
+            password: ""
+        };
     }
 
     handleChange(event, type) {
@@ -18,47 +29,46 @@ class LoginForm extends Component {
         this.setState(newState);
     }
 
-     handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
-        console.log("Fetching start");
-        this.props.fetchUser(this.state.name, this.state.password);
-        console.log("Fetching end");
-    }
-
-    shouldComponentUpdate(nextProps, nextState){
-        if(this.props !== nextProps){console.log("GET NEW USER", nextProps)}
-        return true;
+        let {dispatch} = this.props;
+        const {name, password} = this.state;
+        //start fetching
+        let action = fromFetch.fetchUserStart(name, password);
+        dispatch(action);
+        try {
+            let response = await fetchUser(name, password);
+            let result = await response.json();
+            if(!response.ok)action = fromFetch.fetchUserError(name, password, result[0].message);
+            else action = fromFetch.fetchUserSuccess(name, password, result.token);
+            dispatch(action);
+        }
+        catch (e) {
+            action = fromFetch.fetchUserError(name, password, e.message);
+            dispatch(action);
+        }
     }
 
 
     render() {
         return (
-           <div>
-               <form onSubmit={(e) => this.handleSubmit(e)} className="form">
-                   <input className="form__input" value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" placeholder={"Name"}/>
+            <div>
+                <form onSubmit={(e) => this.handleSubmit(e)} className="form">
+                    <input className="form__input" value={this.state.name} onChange={(e) => this.handleChange(e, "name")} type="text" placeholder={"Name"}/>
 
-                   <input className="form__input" value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" placeholder={"Password"}/>
+                    <input className="form__input" value={this.state.password} onChange={(e) => this.handleChange(e, "password")} type="password" placeholder={"Password"}/>
 
-                   <input className="form__input form__input_submit "  type="submit" value="Login" />
-               </form>
+                    <input className="form__input form__input_submit "  type="submit" value="Login" />
+                </form>
 
-               <div className="redirect-link">
-                 <Link to="/signin">Click to Sign In </Link>
+                <div className="redirect-link">
+                    <Link to="/signin">Click to Sign In </Link>
                 </div>
-           </div>
+            </div>
         );
     }
 }
 
-const mapStateToProps = state => {
-    console.log("(FORM)map state to props: ", state);
-    return {
-    ...state
-}};
 
-const mapDispatchToProps = dispatch => ({
-    fetchUser: (name, password) => dispatch(fetchUser(name, password))
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
-
+export default connect(state => ({login: state.login}))(LoginForm);

@@ -1,24 +1,35 @@
-export default (state = {}, action) => {
+export default (state, action) => {
     switch (action.type) {
         case 'FETCH_USER':
-            console.log("FETCH USER", action);
-            return state;
+            console.log("FETCH USER", action, state);
+            let newState = {
+                ...state,
+                request : true
+            };
+            return newState;
         case 'FETCH_USER_ERROR':
             console.log("FETCH USER ERROR", action);
-            return {
+            newState = {
                 ...state,
-                action
+                request : false,
+                error: action.error,
+                data : {username : action.name, password : action.password}
             };
+            return newState;
         case 'FETCH_USER_SUCCESS':
             console.log("FETCH USER SUCCESS", action);
-            return {
+            newState = {
                 ...state,
-                action
+                request : false,
+                error: false,
+                data : {username : action.name, password : action.password, token: action.token}
             };
+            return newState;
         default:
             console.log("default: ", action, state);
-            return {
-            ...state
-        };
+            newState = {
+                ...state
+            };
+            return newState;
     }
 }
