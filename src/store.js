@@ -3,7 +3,8 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import rootReducer from './reducers';
-export default function configureStore(initialState={login:{error:false, request : false, data: null}}) {
+
+export default function configureStore(initialState={login:{error:false, request : false, data: null}, signin:{error:false, request : false, data: null}}) {
 
    return createStore(
         rootReducer,

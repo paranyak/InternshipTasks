@@ -40,24 +40,25 @@ export const fetchSigninStart = (name, password, email) => {
 };
 
 
-export const fetchSigninError = (name, password, email) => {
+export const fetchSigninError = (name, password, email, error) => {
     console.log("Fetch error in sign in");
     return {
         type: 'FETCH_SIGN_IN_ERROR',
         name,
         password,
         email,
-        error: true
+        error
     }
 };
 
-export const fetchSigninSuccess = (name, password, email) => {
+export const fetchSigninSuccess = (name, password, email, token) => {
     console.log("Fetch success in sign in");
     return {
         type: 'FETCH_SIGN_IN_SUCCESS',
         name,
         password,
-        email
+        email,
+        token
     }
 
 };

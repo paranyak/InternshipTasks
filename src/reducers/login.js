@@ -1,14 +1,14 @@
 export default (state, action) => {
     switch (action.type) {
         case 'FETCH_USER':
-            console.log("FETCH USER", action, state);
+            // console.log("FETCH USER", action, state);
             let newState = {
                 ...state,
                 request : true
             };
             return newState;
         case 'FETCH_USER_ERROR':
-            console.log("FETCH USER ERROR", action);
+            // console.log("FETCH USER ERROR", action);
             newState = {
                 ...state,
                 request : false,
@@ -17,7 +17,7 @@ export default (state, action) => {
             };
             return newState;
         case 'FETCH_USER_SUCCESS':
-            console.log("FETCH USER SUCCESS", action);
+            // console.log("FETCH USER SUCCESS", action);
             newState = {
                 ...state,
                 request : false,
@@ -26,7 +26,7 @@ export default (state, action) => {
             };
             return newState;
         default:
-            console.log("default: ", action, state);
+            // console.log("default: ", action, state);
             newState = {
                 ...state
             };

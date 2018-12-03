@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-
 import { connect } from 'react-redux';
-import { fetchSignin } from '../api/fetch'
+
+import {bindActionCreators} from 'redux'
+
+import * as fromFetch from '../actions/index';
+import {fetchSignin} from '../api/fetch'
 
 import '../styles/SignIn.sass';
 
@@ -9,10 +12,15 @@ class SignIn extends Component {
 
     constructor(props) {
         super(props);
+        const {dispatch} = props;
+        this.boundActionCreators = bindActionCreators(fromFetch, dispatch);
+
         this.state = {
             name: "",
             password: "",
-            email :""};
+            email :"",
+            fetching : false
+        };
     }
 
     handleChange(event, type) {
@@ -21,16 +29,39 @@ class SignIn extends Component {
         this.setState(newState);
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
-        console.log("Fetching start");
-        this.props.fetchSignin(this.state.name, this.state.password, this.state.email);
-        console.log("Fetching end");
+        let {dispatch} = this.props;
+        const {name, password, email} = this.state;
+        //start fetching
+        let action = fromFetch.fetchSigninStart(name, password, email);
+        dispatch(action);
+        try {
+            let response = await fetchSignin(name, password, email);
+            let result = await response.json();
+
+            if(!response.ok)action = fromFetch.fetchSigninError(name, password, email, result[0].message);
+            else action = fromFetch.fetchSigninSuccess(name, password, email, result.token);
+            dispatch(action);
+        }
+        catch (e) {
+            console.log("ERROR: ", e);
+            action = fromFetch.fetchSigninError(name, password, email, e.message);
+            dispatch(action);
+        }
+        this.setState({"fetching":true});
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        if(this.props !== nextProps){console.log("GET NEW USER", nextProps)}
+        if(this.state !== nextState){console.log("GET ", nextState)}
+        if(this.props !== nextProps){console.log("PET ", nextProps, !nextProps.signin.request && nextProps.signin.error)}
+        if(!nextProps.signin.request && nextProps.signin.error && this.state.fetching) this.displayErrorMessage(nextProps.signin.error);
         return true;
+    }
+
+    displayErrorMessage(error){
+
+        console.log("error", error)
     }
 
 
@@ -53,15 +84,5 @@ class SignIn extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    console.log("(Sign in)map state to props: ", state);
-    return {
-        ...state
-    }};
-
-const mapDispatchToProps = dispatch => ({
-    fetchSignin: (name, password, email) => dispatch(fetchSignin(name, password, email))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(state => ({signin: state.signin}))(SignIn);
 
