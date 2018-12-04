@@ -1,16 +1,32 @@
-import { handleAction } from 'redux-actions';
+import { handleActions } from 'redux-actions';
 import * as types from '../../actionTypes';
 
-const reducer = handleAction(
-  types.FETCH_USER,
+const reducer = handleActions({
+  [types.FETCH_USER]:
   (state, action) => ({
     ...state,
     request: true,
     data: action.payload,
   }),
-  {
-    request: false, error: false, data: null,
-  },
-);
+  [types.FETCH_USER_SUCCESS]:
+      (state, action) => ({
+        ...state,
+        request: false,
+        data: action.payload,
+        error: false,
+      }),
+  [types.FETCH_USER_ERROR]:
+      (state, action) => ({
+        ...state,
+        request: false,
+        error: action.payload.error,
+        data: action.payload,
+      }),
+},
+{
+  request: false,
+  error: false,
+  data: null,
+});
 
 export default reducer;

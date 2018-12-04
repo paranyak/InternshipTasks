@@ -1,8 +1,13 @@
-import createAction from 'redux-actions/es/createAction';
+import createActions from 'redux-actions/es/createActions';
 import * as types from '../../actionTypes';
 
-export const fetchUsersStart = createAction(
-  types.FETCH_USER,
-  (name, password) => ({ name, password }),
+const userActions = createActions(
+  {
+    [types.FETCH_USER]: (name, password) => ({ name, password }),
+    [types.FETCH_USER_SUCCESS]: (name, password, token) => ({ name, password, token }),
+    [types.FETCH_USER_ERROR]: (name, password, error) => ({ name, password, error }),
 
+  },
 );
+
+export default userActions;
