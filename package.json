@@ -15,6 +15,7 @@
     "react-scripts": "2.1.1",
     "react-tooltip": "^3.4.0",
     "redux": "^3.7.2",
+    "redux-actions": "^2.6.4",
     "redux-devtools-extension": "^2.13.7",
     "redux-thunk": "^2.2.0"
   },

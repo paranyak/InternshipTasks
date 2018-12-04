@@ -5,15 +5,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './reducers.js';
 
 
-export default function configureStore(initialState = {
-  user: {
-    login: { error: false, request: false, data: null },
-    signin: { error: false, request: false, data: null },
-  },
-}) {
+export default function configureStore() {
   return createStore(
     rootReducer,
-    initialState,
     composeWithDevTools(applyMiddleware(thunk)),
   );
 }
