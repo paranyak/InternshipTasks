@@ -1,5 +1,5 @@
 import createActions from 'redux-actions/es/createActions';
-import * as types from '../../actionTypes';
+import * as types from './actionTypes';
 
 const userActions = createActions(
   {

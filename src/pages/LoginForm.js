@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 
-import { fetchUser } from '../../api/fetch';
-import user from './actions';
+import { fetchUser } from '../api/fetch';
+import user from '../duck/user/actions';
 
 class LoginForm extends Component {
   constructor(props) {

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 
-import { fetchSignin } from '../../api/fetch';
-import user from './actions';
+import { fetchSignin } from '../api/fetch';
+import user from '../duck/user/actions';
 
-import '../../styles/SignIn.sass';
+import '../styles/SignIn.sass';
 
 class SignIn extends Component {
   constructor(props) {

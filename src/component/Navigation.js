@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import LoginForm from './LoginForm';
-import SignIn from './SignIn';
+import LoginForm from '../pages/LoginForm';
+import SignIn from '../pages/SignIn';
 
 class Navigation extends Component {
   render() {

@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import * as types from '../../actionTypes';
+import * as types from './actionTypes';
 
 const logInReducer = handleActions({
   [types.FETCH_USER]:
