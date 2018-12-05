@@ -4,16 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 
-import * as fromFetch from './userActions';
-// import { fetchUser } from '../../api/fetch';
-import userActions from './actions';
+import { fetchUser } from '../../api/fetch';
+import user from './actions';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
     const { dispatch } = props;
 
-    this.boundActionCreators = bindActionCreators(fromFetch, dispatch);
+    this.boundActionCreators = bindActionCreators(user.userActions, dispatch);
 
     this.state = {
       name: '',
@@ -47,16 +46,17 @@ class LoginForm extends Component {
 
     console.log('START FETCHING ACTION');
 
-    let action = userActions.fetchLogin(name, password);
+    let action = user.userActions.fetchLogin(name, password);
     dispatch(action);
     try {
-      const response = await userActions.fetchLoginSuccess(name, password);
+      const response = await fetchUser(name, password);
       const result = await response.json();
-      if (!response.ok) action = userActions.fetchLoginError(name, password, result[0].message);
-      else action = userActions.fetchLoginSuccess(name, password, result.token);
+      console.log('response: ', result);
+      if (!response.ok) action = user.userActions.fetchLoginError(name, password, result[0].message);
+      else action = user.userActions.fetchLoginSuccess(name, password, result.token);
       dispatch(action);
     } catch (e) {
-      action = userActions.fetchLoginError(name, password, e.message);
+      action = user.userActions.fetchLoginError(name, password, e.message);
       dispatch(action);
     }
     this.setState({ fetching: true });

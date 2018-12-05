@@ -10,4 +10,18 @@ const userActions = createActions(
   },
 );
 
-export default userActions;
+
+const signInActions = createActions(
+  {
+    [types.FETCH_SIGN_IN]: (name, password, email) => ({ name, password, email }),
+    [types.FETCH_SIGN_IN_SUCCESS]: (name, password, email, token) => ({
+      name, password, email, token,
+    }),
+    [types.FETCH_SIGN_IN_ERROR]: (name, password, email, error) => ({
+      name, password, email, error,
+    }),
+
+  },
+);
+
+export default { signInActions, userActions };

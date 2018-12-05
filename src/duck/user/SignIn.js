@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 
-import * as fromFetch from './userActions';
 import { fetchSignin } from '../../api/fetch';
+import user from './actions';
 
 import '../../styles/SignIn.sass';
 
@@ -12,7 +12,7 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     const { dispatch } = props;
-    this.boundActionCreators = bindActionCreators(fromFetch, dispatch);
+    this.boundActionCreators = bindActionCreators(user.signInActions, dispatch);
 
     this.state = {
       name: '',
@@ -48,18 +48,18 @@ class SignIn extends Component {
     const { dispatch } = this.props;
     const { name, password, email } = this.state;
     // start fetching
-    let action = fromFetch.fetchSigninStart(name, password, email);
+    let action = user.signInActions.fetchSignIn(name, password, email);
     dispatch(action);
     try {
       const response = await fetchSignin(name, password, email);
       const result = await response.json();
 
       if (!response.ok) {
-        action = fromFetch.fetchSigninError(name, password, email, result[0].message);
-      } else action = fromFetch.fetchSigninSuccess(name, password, email, result.token);
+        action = user.signInActions.fetchSignInError(name, password, email, result[0].message);
+      } else action = user.signInActions.fetchSignInSuccess(name, password, email, result.token);
       dispatch(action);
     } catch (e) {
-      action = fromFetch.fetchSigninError(name, password, email, e.message);
+      action = user.signInActions.fetchSignInError(name, password, email, e.message);
       dispatch(action);
     }
     this.setState({ fetching: true });
@@ -115,4 +115,4 @@ class SignIn extends Component {
   }
 }
 
-export default connect(state => ({ signin: state.user.signin }))(SignIn);
+export default connect(state => ({ signin: state.signin }))(SignIn);
