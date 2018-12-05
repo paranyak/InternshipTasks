@@ -7,6 +7,7 @@ import { fetchSignin } from '../api/fetch';
 import user from '../duck/user/actions';
 
 import '../styles/SignIn.sass';
+import InputField from '../component/inputFields';
 
 class SignIn extends Component {
   constructor(props) {
@@ -24,8 +25,6 @@ class SignIn extends Component {
 
 
   shouldComponentUpdate(nextProps, nextState) {
-    // if(this.state !== nextState){console.log("GET ", nextState, this.state)}
-    // if(this.props !== nextProps){console.log("PET ", nextProps, this.props)}
     if (!this.props.signin.request && this.props.signin.error && nextState.fetching) {
       console.log('Error');
       this.displayMessage(false, nextProps.signin.error);
@@ -47,7 +46,6 @@ class SignIn extends Component {
     event.preventDefault();
     const { dispatch } = this.props;
     const { name, password, email } = this.state;
-    // start fetching
     let action = user.signInActions.fetchSignIn(name, password, email);
     dispatch(action);
     try {
@@ -80,30 +78,27 @@ class SignIn extends Component {
       <div className="form-container">
         <form onSubmit={e => this.handleSubmit(e)} className="form">
 
-          <input
-            className="form__input"
+          <InputField
             value={this.state.email}
-            onChange={e => this.handleChange(e, 'email')}
+            handleChange={e => this.handleChange(e, 'email')}
             type="email"
             placeholder="Enter your email"
           />
 
-          <input
-            className="form__input"
+          <InputField
             value={this.state.name}
-            onChange={e => this.handleChange(e, 'name')}
+            handleChange={e => this.handleChange(e, 'name')}
             type="text"
             placeholder="Enter your username"
           />
 
-          <input
-            className="form__input"
+          <InputField
             value={this.state.password}
-            onChange={e => this.handleChange(e, 'password')}
+            handleChange={e => this.handleChange(e, 'password')}
             type="password"
             placeholder="Enter your password"
           />
-          <input
+          <InputField
             className="form__input form__input_submit "
             type="submit"
             value="Sign In"

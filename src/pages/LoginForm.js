@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { fetchUser } from '../api/fetch';
 import user from '../duck/user/actions';
+import InputField from '../component/inputFields';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -76,23 +77,21 @@ class LoginForm extends Component {
     return (
       <div className="form-container">
         <form onSubmit={e => this.handleSubmit(e)} className="form">
-          <input
-            className="form__input"
-            value={this.state.name}
-            onChange={e => this.handleChange(e, 'name')}
+          <InputField
             type="text"
-            placeholder="Name"
+            value={this.state.name}
+            placeholder="Enter your name"
+            handleChange={e => this.handleChange(e, 'name')}
           />
 
-          <input
-            className="form__input"
-            value={this.state.password}
-            onChange={e => this.handleChange(e, 'password')}
+          <InputField
             type="password"
-            placeholder="Password"
+            value={this.state.password}
+            placeholder="Enter your password"
+            handleChange={e => this.handleChange(e, 'password')}
           />
 
-          <input className="form__input form__input_submit " type="submit" value="Login" />
+          <InputField className="form__input form__input_submit " type="submit" value="Login" />
         </form>
         <h1 className="error-message">ERROR</h1>
         <Link to="/signin" className="redirect-link">Click to Sign In </Link>
