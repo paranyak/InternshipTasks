@@ -11,10 +11,6 @@ import InputField from '../component/inputFields';
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    const { dispatch } = props;
-
-    this.boundActionCreators = bindActionCreators(user.userActions, dispatch);
-
     this.state = {
       name: '',
       password: '',
@@ -42,23 +38,20 @@ class LoginForm extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { dispatch } = this.props;
+    const { fetchUserStart, fetchUserSuccess, fetchUserError } = this.props;
     const { name, password } = this.state;
 
     console.log('START FETCHING ACTION');
 
-    let action = user.userActions.fetchLogin(name, password);
-    dispatch(action);
+    fetchUserStart(name, password);
     try {
       const response = await fetchUser(name, password);
       const result = await response.json();
       console.log('response: ', result);
-      if (!response.ok) action = user.userActions.fetchLoginError(name, password, result[0].message);
-      else action = user.userActions.fetchLoginSuccess(name, password, result.token);
-      dispatch(action);
+      if (!response.ok) fetchUserError(name, password, result[0].message);
+      else fetchUserSuccess(name, password, result.token);
     } catch (e) {
-      action = user.userActions.fetchLoginError(name, password, e.message);
-      dispatch(action);
+      fetchUserError(name, password, e.message);
     }
     this.setState({ fetching: true });
   }
@@ -100,4 +93,14 @@ class LoginForm extends Component {
   }
 }
 
-export default connect(state => ({ login: state.login }))(LoginForm);
+const mapStateToProps = (state) => {
+  return { login: state.login };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  fetchUserStart: user.userActions.fetchUser,
+  fetchUserSuccess: user.userActions.fetchUserSuccess,
+  fetchUserError: user.userActions.fetchUserError,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

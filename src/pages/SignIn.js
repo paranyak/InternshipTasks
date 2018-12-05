@@ -12,8 +12,6 @@ import InputField from '../component/inputFields';
 class SignIn extends Component {
   constructor(props) {
     super(props);
-    const { dispatch } = props;
-    this.boundActionCreators = bindActionCreators(user.signInActions, dispatch);
 
     this.state = {
       name: '',
@@ -44,21 +42,19 @@ class SignIn extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { dispatch } = this.props;
     const { name, password, email } = this.state;
-    let action = user.signInActions.fetchSignIn(name, password, email);
-    dispatch(action);
+    const { fetchSignInStart, fetchSignInError, fetchSignInSuccess } = this.props;
+
+    fetchSignInStart(name, password, email);
     try {
       const response = await fetchSignin(name, password, email);
       const result = await response.json();
 
       if (!response.ok) {
-        action = user.signInActions.fetchSignInError(name, password, email, result[0].message);
-      } else action = user.signInActions.fetchSignInSuccess(name, password, email, result.token);
-      dispatch(action);
+        fetchSignInError(name, password, email, result[0].message);
+      } else fetchSignInSuccess(name, password, email, result.token);
     } catch (e) {
-      action = user.signInActions.fetchSignInError(name, password, email, e.message);
-      dispatch(action);
+      fetchSignInError(name, password, email, e.message);
     }
     this.setState({ fetching: true });
   }
@@ -110,4 +106,14 @@ class SignIn extends Component {
   }
 }
 
-export default connect(state => ({ signin: state.signin }))(SignIn);
+const mapStateToProps = (state) => {
+  return { signin: state.signin };
+};
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  fetchSignInStart: user.signInActions.fetchSignIn,
+  fetchSignInSuccess: user.signInActions.fetchSignInSuccess,
+  fetchSignInError: user.signInActions.fetchSignInError,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

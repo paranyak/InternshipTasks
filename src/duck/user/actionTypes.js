@@ -1,7 +1,7 @@
 // login
-export const FETCH_USER = 'FETCH_LOGIN';
-export const FETCH_USER_ERROR = 'FETCH_LOGIN_ERROR';
-export const FETCH_USER_SUCCESS = 'FETCH_LOGIN_SUCCESS';
+export const FETCH_USER = 'FETCH_USER';
+export const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 // sign in
 export const FETCH_SIGN_IN = 'FETCH_SIGN_IN';
 export const FETCH_SIGN_IN_ERROR = 'FETCH_SIGN_IN_ERROR';
