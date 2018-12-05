@@ -8,6 +8,7 @@ import user from '../duck/user/actions';
 
 import '../styles/SignIn.sass';
 import InputField from '../component/inputFields';
+import { signInSelector } from '../duck/user/selectors';
 
 class SignIn extends Component {
   constructor(props) {
@@ -106,9 +107,7 @@ class SignIn extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return { signin: state.signin };
-};
+const mapStateToProps = state => ({ signin: signInSelector(state) });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchSignInStart: user.signInActions.fetchSignIn,

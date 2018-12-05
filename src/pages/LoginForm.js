@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 
+import { loginSelector } from "../duck/user/selectors";
 import { fetchUser } from '../api/fetch';
 import user from '../duck/user/actions';
 import InputField from '../component/inputFields';
@@ -94,7 +95,7 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { login: state.login };
+  return { login: loginSelector(state) };
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
